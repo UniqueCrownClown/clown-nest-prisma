@@ -2,14 +2,12 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  HttpStatus,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
-import { AuthDto } from './dto';
+import { AuthDto, logInDto } from './dto';
 import { JwtGuard } from './guard';
 
 @Controller('auth')
@@ -21,15 +19,14 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signin(@Body() dto: AuthDto) {
+  signin(@Body() dto: logInDto) {
     return this.authService.signIn(dto);
   }
 
   @UseGuards(JwtGuard)
-  @Get('me')
-  getme(@GetUser() user: any) {
+  @Get('current')
+  getme(@GetUser() user: Express.User) {
     return user;
   }
 }

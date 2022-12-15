@@ -5,7 +5,7 @@ CREATE TABLE `users` (
     `updatedAt` DATETIME(3) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `hash` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)

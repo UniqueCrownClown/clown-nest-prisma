@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthDto, logInDto } from './dto';
 import * as argon from 'argon2';
 
 @Injectable()
@@ -32,6 +32,7 @@ export class AuthService {
     try {
       const user = await this.prisma.user.create({
         data: {
+          name: dto.name,
           email: dto.email,
           hash: hash,
         },
@@ -49,7 +50,7 @@ export class AuthService {
     }
   };
 
-  signIn = async (dto: AuthDto) => {
+  signIn = async (dto: logInDto) => {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
