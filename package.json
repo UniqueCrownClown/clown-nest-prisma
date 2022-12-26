@@ -6,9 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "db:rm": "docker compose rm db -s -f -v",
-    "db:up": "docker compose up db -d",
-    "db:restart": "yarn db:rm && yarn db:up",
+    "db:rm": "docker compose rm mysql-container -s -f -v",
+    "db:up": "docker compose up mysql-container -d",
+    "db:restart": "yarn mysql-container:rm && yarn mysql-container:up",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
