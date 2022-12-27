@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
   hash      String
   name      String
   posts     Post[]
+  Address   Address[]
 
   @@map("users")
 }
@@ -32,4 +33,60 @@ model Post {
   author    User     @relation(fields: [authorId], references: [id])
 
   @@map("posts")
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  name        String
+  description String?
+  image       String?
+  count       Int
+  price       Int
+  OrderDetail OrderDetail[]
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  telphone  String
+  country   String
+  province  String
+  city      String
+  area      String
+  street    String
+  zip       String?
+  isDefault Int
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  Order     Order[]
+}
+
+enum ORDERSTATUS {
+  UNPAID
+  PAID
+  FINISHED
+}
+
+model Order {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  amount      Int
+  status      ORDERSTATUS   @default(UNPAID)
+  addressId   Int
+  address     Address       @relation(fields: [addressId], references: [id])
+  OrderDetail OrderDetail[]
+}
+
+model OrderDetail {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  count     Int?
 }

@@ -16,7 +16,7 @@ async function bootstrap() {
     .setTitle('clown-nest-prisma')
     .setDescription('clown-nest-prisma API description')
     .setVersion('1.0')
-    .addTag('clown-nest-prisma')
+    .addTag('nest-swagger')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
