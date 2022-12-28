@@ -21,10 +21,10 @@ export class OrderController {
     return this.orderService.addOrder(dto);
   }
 
-  @Delete('delOrder/:id')
+  @Delete('delOrder/:ids')
   @ApiOperation({ summary: '删除order', description: '删除order' })
-  deleteOrder(@Param('id') id: string) {
-    return this.orderService.delOrder(id);
+  deleteOrder(@Param('id') ids: string) {
+    return this.orderService.delOrder(ids);
   }
 
   @Put('updateOrder/:id')

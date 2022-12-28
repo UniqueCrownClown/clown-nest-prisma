@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { AddressController } from 'src/address/address.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrderDto } from './dto/order.dto';
 
@@ -22,10 +23,17 @@ export class OrderService {
           name: 'clown',
         },
       });
+      const address = await this.prisma.address.findFirst({
+        where: {
+          id: '1',
+        },
+      });
       const post = await this.prisma.order.create({
         data: {
           amount: dto.amount,
-          authorId: user.id,
+          description: dto.descrption,
+          userId: user.id,
+          addressId: address.id,
         },
       });
       return post;
@@ -36,19 +44,17 @@ export class OrderService {
     }
   }
 
-  async delOrder(id: string) {
+  async delOrder(ids: string) {
+    const idsToDelete = ids.split(',').map((item) => parseInt(item));
     try {
-      const postone = await this.prisma.order.findFirst({
-        where: { id: parseInt(id) },
-      });
-      if (postone) {
-        const result = await this.prisma.order.delete({
-          where: {
-            id: parseInt(id),
+      const result = await this.prisma.order.deleteMany({
+        where: {
+          id: {
+            in: idsToDelete,
           },
-        });
-        return result;
-      }
+        },
+      });
+      return result;
     } catch (error) {
       throw error;
     }
@@ -62,6 +68,7 @@ export class OrderService {
         },
         data: {
           amount: dto.amount,
+          description: dto.descrption,
         },
       });
       return result;

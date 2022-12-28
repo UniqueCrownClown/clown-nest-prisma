@@ -29,10 +29,10 @@ export class ProductController {
     return this.productService.addProduct(dto);
   }
 
-  @Delete('delProduct/:id')
+  @Delete('delProduct/:ids')
   @ApiOperation({ summary: '删除product', description: '删除product' })
-  deleteProduct(@Param('id') id: string) {
-    return this.productService.delProduct(id);
+  deleteProduct(@Param('ids') ids: string) {
+    return this.productService.delProduct(ids);
   }
 
   @Put('updateProduct/:id')

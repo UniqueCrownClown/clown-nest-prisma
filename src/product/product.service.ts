@@ -36,19 +36,17 @@ export class ProductService {
     }
   }
 
-  async delProduct(id: string) {
+  async delProduct(ids: string) {
+    const idsToDelete = ids.split(',').map((item) => parseInt(item));
     try {
-      const postone = await this.prisma.product.findFirst({
-        where: { id: parseInt(id) },
-      });
-      if (postone) {
-        const result = await this.prisma.product.delete({
-          where: {
-            id: parseInt(id),
+      const result = await this.prisma.product.deleteMany({
+        where: {
+          id: {
+            in: idsToDelete,
           },
-        });
-        return result;
-      }
+        },
+      });
+      return result;
     } catch (error) {
       throw error;
     }

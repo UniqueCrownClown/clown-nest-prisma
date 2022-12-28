@@ -19,7 +19,7 @@ model User {
   name      String
   posts     Post[]
   Address   Address[]
-
+  Order     Order[]
   @@map("users")
 }
 
@@ -75,10 +75,13 @@ model Order {
   id          Int           @id @default(autoincrement())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  description String?
   amount      Int
   status      ORDERSTATUS   @default(UNPAID)
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
   addressId   Int
-  address     Address       @relation(fields: [addressId], references: [id])
+  address     Address       @reluserIdation(fields: [addressId], references: [id])
   OrderDetail OrderDetail[]
 }
 

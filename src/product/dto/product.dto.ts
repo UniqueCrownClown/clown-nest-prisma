@@ -7,7 +7,7 @@ export class ProductDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: '描述', required: true })
+  @ApiProperty({ description: '商品描述', required: true })
   @IsString()
   @IsNotEmpty()
   description: string;
