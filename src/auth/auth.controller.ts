@@ -5,7 +5,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator';
 import { AuthDto, logInDto } from './dto';
@@ -27,8 +27,9 @@ export class AuthController {
   }
 
   @UseGuards(JwtGuard)
+  @ApiBearerAuth('defaultBearerAuth')
   @Get('current')
-  getme(@GetUser() user: Express.User) {
+  getme(@GetUser() user: ExpressUser) {
     return user;
   }
 }

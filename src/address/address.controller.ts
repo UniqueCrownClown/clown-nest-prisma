@@ -1,24 +1,39 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddressDto } from './dto/address.dto';
 import { AddressService } from './address.service';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
 
 @Controller('address')
 @ApiTags('address')
 export class AddressController {
   constructor(private addressService: AddressService) {}
 
+  @UseGuards(JwtGuard)
   @Get('getAddress')
   @ApiOperation({ summary: '获取address', description: '获取address' })
-  getAddress() {
-    return this.addressService.getAddress();
+  @ApiBearerAuth('defaultBearerAuth')
+  getAddress(@GetUser() user: ExpressUser) {
+    return this.addressService.getAddress(user);
   }
 
+  @UseGuards(JwtGuard)
   @Post('addAddress')
   @ApiOperation({ summary: '新增address', description: '新增address' })
   @ApiBody({ description: '参数可选', type: AddressDto })
-  addAddress(@Body() dto: AddressDto) {
-    return this.addressService.addAddress(dto);
+  @ApiBearerAuth('defaultBearerAuth')
+  addAddress(@Body() dto: AddressDto, @GetUser() user: ExpressUser) {
+    return this.addressService.addAddress(dto, user);
   }
 
   @Delete('delAddress/:id')

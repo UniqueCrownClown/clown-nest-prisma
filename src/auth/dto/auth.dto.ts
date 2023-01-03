@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 
 export class AuthDto {
@@ -16,6 +16,11 @@ export class AuthDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsNotEmpty()
+  isAdmin: boolean;
 }
 export class logInDto extends PickType(AuthDto, [
   'email',

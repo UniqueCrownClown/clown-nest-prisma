@@ -17,6 +17,7 @@ model User {
   email     String    @unique
   hash      String
   name      String
+  isAdmin   Boolean
   posts     Post[]
   Address   Address[]
   Order     Order[]
@@ -59,7 +60,7 @@ model Address {
   area      String
   street    String
   zip       String?
-  isDefault Int
+  isDefault Boolean
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   Order     Order[]
@@ -81,7 +82,7 @@ model Order {
   userId      Int
   user        User          @relation(fields: [userId], references: [id])
   addressId   Int
-  address     Address       @reluserIdation(fields: [addressId], references: [id])
+  address     Address       @relation(fields: [addressId], references: [id])
   OrderDetail OrderDetail[]
 }
 

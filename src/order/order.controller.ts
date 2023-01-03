@@ -1,5 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
 import { OrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
 
@@ -8,17 +19,21 @@ import { OrderService } from './order.service';
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
+  @UseGuards(JwtGuard)
   @Get('getOrder')
   @ApiOperation({ summary: '获取order', description: '获取order' })
-  getOrder() {
-    return this.orderService.getOrder();
+  @ApiBearerAuth('defaultBearerAuth')
+  getOrder(@GetUser() user: ExpressUser) {
+    return this.orderService.getOrder(user);
   }
 
+  @UseGuards(JwtGuard)
   @Post('addOrder')
   @ApiOperation({ summary: '新增order', description: '新增order' })
   @ApiBody({ description: '参数可选', type: OrderDto })
-  addOrder(@Body() dto: OrderDto) {
-    return this.orderService.addOrder(dto);
+  @ApiBearerAuth('defaultBearerAuth')
+  addOrder(@Body() dto: OrderDto, @GetUser() user: ExpressUser) {
+    return this.orderService.addOrder(dto, user);
   }
 
   @Delete('delOrder/:ids')

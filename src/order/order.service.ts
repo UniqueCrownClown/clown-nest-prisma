@@ -1,46 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { AddressController } from 'src/address/address.controller';
+import { OrderDetailService } from 'src/orderDetail/orderDetail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrderDto } from './dto/order.dto';
 
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
-  async getOrder() {
+  private orderDetail: OrderDetailService;
+  async getOrder(user: ExpressUser) {
     try {
-      const result = await this.prisma.order.findMany();
+      let result = [];
+      if (user?.id && !user.isAdmin) {
+        result = await this.prisma.order.findMany({
+          where: {
+            userId: user.id,
+          },
+        });
+        return result;
+      }
+      result = await this.prisma.order.findMany();
       return result;
     } catch (error) {
       throw error;
     }
   }
 
-  async addOrder(dto: OrderDto) {
+  async addOrder(dto: OrderDto, user: ExpressUser) {
     try {
-      const user = await this.prisma.user.findFirst({
-        where: {
-          name: 'clown',
-        },
-      });
-      const address = await this.prisma.address.findFirst({
-        where: {
-          id: '1',
-        },
-      });
+      // const currentUser = await this.prisma.user.findFirst({
+      //   where: {
+      //     id: user.id,
+      //   },
+      // });
       const post = await this.prisma.order.create({
         data: {
           amount: dto.amount,
           description: dto.descrption,
           userId: user.id,
-          addressId: address.id,
+          // addressId: address.id,
         },
       });
+      // 关联添加orderDetail
+      if (dto?.orderDetail) {
+        const orderRes = await this.orderDetail.addOrderDetail(dto.orderDetail);
+      }
+
       return post;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;
       }
+      throw error;
     }
   }
 
@@ -54,6 +65,21 @@ export class OrderService {
           },
         },
       });
+      // 关联删除orderDetail
+      await Promise.allSettled(
+        idsToDelete.map(
+          (item) =>
+            new Promise(async (resolve) => {
+              const orderRes = await this.orderDetail.getOrderDetail(
+                item.toString(),
+              );
+              const ids = orderRes.map((item) => item.id);
+              const result = await this.orderDetail.delOrderDetail(ids);
+              resolve(result);
+            }),
+        ),
+      );
+
       return result;
     } catch (error) {
       throw error;
@@ -69,6 +95,7 @@ export class OrderService {
         data: {
           amount: dto.amount,
           description: dto.descrption,
+          address: dto.addressId,
         },
       });
       return result;

@@ -35,6 +35,7 @@ export class AuthService {
           name: dto.name,
           email: dto.email,
           hash: hash,
+          isAdmin: dto.isAdmin,
         },
       });
       return this.signToken(user.id, user.email);

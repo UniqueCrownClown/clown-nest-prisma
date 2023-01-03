@@ -17,6 +17,7 @@ async function bootstrap() {
     .setDescription('clown-nest-prisma API description')
     .setVersion('1.0')
     .addTag('nest-swagger')
+    .addBearerAuth(undefined, 'defaultBearerAuth')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

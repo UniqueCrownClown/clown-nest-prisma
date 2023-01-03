@@ -6,22 +6,26 @@ import { AddressDto } from './dto/address.dto';
 @Injectable()
 export class AddressService {
   constructor(private prisma: PrismaService) {}
-  async getAddress() {
+  async getAddress(user: ExpressUser) {
     try {
-      const result = await this.prisma.address.findMany();
+      let result = [];
+      if (user?.id && !user.isAdmin) {
+        result = await this.prisma.address.findMany({
+          where: {
+            userId: user.id,
+          },
+        });
+        return result;
+      }
+      result = await this.prisma.address.findMany();
       return result;
     } catch (error) {
       throw error;
     }
   }
 
-  async addAddress(dto: AddressDto) {
+  async addAddress(dto: AddressDto, user: ExpressUser) {
     try {
-      const user = await this.prisma.user.findFirst({
-        where: {
-          name: 'clown',
-        },
-      });
       const post = await this.prisma.address.create({
         data: {
           name: dto.name,
