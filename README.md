@@ -1,9 +1,9 @@
-## NestJS + Postgres + Prisma + Passport JWT (N3P Stack)
+## NestJS + Mysql + Prisma + Passport JWT (N3P Stack)
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript scaffold.
 
 1. NestJS 9
-2. Postgres 14 (Docker)
+2. Mysql (Docker)
 3. Prisma ORM
 4. Passport JWT
 

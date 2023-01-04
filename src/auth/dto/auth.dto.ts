@@ -1,10 +1,8 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsEmpty, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 
 export class AuthDto {
   @ApiProperty()
-  @IsEmail()
-  @IsNotEmpty()
   email: string;
 
   @ApiProperty()
@@ -14,7 +12,6 @@ export class AuthDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
@@ -25,4 +22,5 @@ export class AuthDto {
 export class logInDto extends PickType(AuthDto, [
   'email',
   'password',
+  'name',
 ] as const) {}

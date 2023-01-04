@@ -15,7 +15,7 @@ import { OrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
-@ApiTags('order')
+@ApiTags('订单管理')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 

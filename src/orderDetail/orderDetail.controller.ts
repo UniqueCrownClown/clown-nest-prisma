@@ -12,7 +12,7 @@ import { OrderDetailDto } from './dto/orderDetail.dto';
 import { OrderDetailService } from './orderDetail.service';
 
 @Controller('orderDetail')
-@ApiTags('orderDetail')
+@ApiTags('订单详情管理')
 export class OrderDetailController {
   constructor(private orderDetailService: OrderDetailService) {}
 

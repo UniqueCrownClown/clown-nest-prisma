@@ -15,7 +15,7 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 
 @Controller('address')
-@ApiTags('address')
+@ApiTags('地址管理')
 export class AddressController {
   constructor(private addressService: AddressService) {}
 

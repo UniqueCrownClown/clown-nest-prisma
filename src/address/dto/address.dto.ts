@@ -41,6 +41,11 @@ export class AddressDto {
   @IsNotEmpty()
   street: string;
 
+  @ApiProperty({ description: '详细地址', example: '华盛豪庭2号301', required: true })
+  @IsString()
+  @IsNotEmpty()
+  detail: string;
+
   @ApiProperty({ description: '邮政编码', example: '510555', required: true })
   @IsString()
   @IsNotEmpty()

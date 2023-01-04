@@ -16,7 +16,7 @@ model User {
   updatedAt DateTime  @updatedAt
   email     String    @unique
   hash      String
-  name      String
+  name      String    @unique
   isAdmin   Boolean
   posts     Post[]
   Address   Address[]
@@ -59,6 +59,7 @@ model Address {
   city      String
   area      String
   street    String
+  detail    String
   zip       String?
   isDefault Boolean
   userId    Int

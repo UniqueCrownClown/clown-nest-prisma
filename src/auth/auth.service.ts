@@ -52,11 +52,21 @@ export class AuthService {
   };
 
   signIn = async (dto: logInDto) => {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
+    let user;
+    if (dto?.email) {
+      user = await this.prisma.user.findUnique({
+        where: {
+          email: dto.email,
+        },
+      });
+    } else if (dto?.name) {
+      user = await this.prisma.user.findUnique({
+        where: {
+          name: dto.name,
+        },
+      });
+    }
+
     if (!user) {
       throw new ForbiddenException(
         'No user found in the database. Please sign up first to continue.',
