@@ -44,3 +44,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## recorrd
+
+1. use code first
