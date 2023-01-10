@@ -10,9 +10,9 @@ async function bootstrap() {
   // 开启后post会过滤不需要的参数，对graphql的post参数有影响
   // app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // 全局注册拦截器
-  // app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new TransformInterceptor());
   // 全局注册错误的过滤器
-  // app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
   const options = new DocumentBuilder()
     .setTitle('clown-nest-prisma')
     .setDescription('clown-nest-prisma API description')
@@ -23,7 +23,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   await app.listen(5000);
-  Logger.log('Server ready at: http://localhost:5000/graphql');
+  Logger.log(
+    'Server ready at: http://localhost:5000/graphql',
+    'graphql start ...',
+  );
   Logger.log('http://127.0.0.1:5000/api', 'swagger start ...');
 }
 bootstrap();

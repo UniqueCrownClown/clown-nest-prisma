@@ -89,7 +89,6 @@ export class UserResolver {
     @Args('userUniqueInput') userUniqueInput: UserUniqueInput,
     @Context() ctx
   ): Promise<Post[]> {
-    // const LazyMetadataStorage = global.GqlLazyMetadataStorageHost;
     return this.prismaService.user
       .findUnique({
         where: {

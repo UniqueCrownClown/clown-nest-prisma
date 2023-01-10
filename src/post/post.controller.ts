@@ -17,10 +17,10 @@ import { PostService } from './post.service';
 export class PostController {
   constructor(private postService: PostService) {}
 
-  @Get('')
-  getme() {
-    throw new HttpException('请求失败', 500);
-  }
+  // @Get('')
+  // getme() {
+  //   throw new HttpException('请求失败', 500);
+  // }
 
   @Get('getPost')
   @ApiOperation({ summary: '获取post', description: '获取post' })
