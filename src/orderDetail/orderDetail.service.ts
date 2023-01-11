@@ -21,10 +21,13 @@ export class OrderDetailService {
 
   async addOrderDetail(dto: OrderDetailDto[]) {
     const orderArr = dto.map((item) => ({
-      orderId: item.orderId,
-      productId: item.productId,
-      amount: item.amount,
-      description: item.description,
+      order: {
+        connect: { id: item.orderId },
+      },
+      product: {
+        connect: { id: item.productId },
+      },
+      count: item.count,
     }));
     return Promise.all(
       orderArr.map(
@@ -38,6 +41,15 @@ export class OrderDetailService {
           }),
       ),
     );
+    // 有外键约束不能用createMany
+    // try {
+    //   const result = await this.prisma.orderDetail.createMany({
+    //     data: orderArr,
+    //   });
+    //   return result;
+    // } catch (error) {
+    //   throw error;
+    // }
   }
 
   async delOrderDetail(ids: string) {
@@ -63,8 +75,7 @@ export class OrderDetailService {
           id: parseInt(id),
         },
         data: {
-          amount: dto.amount,
-          description: dto.description,
+          count: dto.count,
         },
       });
       return result;

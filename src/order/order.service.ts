@@ -28,25 +28,29 @@ export class OrderService {
 
   async addOrder(dto: OrderDto, user: ExpressUser) {
     try {
-      // const currentUser = await this.prisma.user.findFirst({
-      //   where: {
-      //     id: user.id,
-      //   },
-      // });
-      const post = await this.prisma.order.create({
-        data: {
-          amount: dto.amount,
-          description: dto.descrption,
-          userId: user.id,
-          // addressId: address.id,
-        },
-      });
-      // 关联添加orderDetail
-      if (dto?.orderDetail) {
-        const orderRes = await this.orderDetail.addOrderDetail(dto.orderDetail);
+      if (user.id) {
+        const post = await this.prisma.order.create({
+          data: {
+            amount: dto.amount,
+            description: dto.description,
+            user: {
+              connect: { id: user.id },
+            },
+            OrderDetail: {
+              create: dto.detail,
+            },
+          },
+        });
+        return post;
+        // 关联添加orderDetail
+        // if (dto?.detail) {
+        //   const orderDetails = dto.detail.map((item) => ({
+        //     ...item,
+        //     orderId: post.data.id,
+        //   }));
+        //   const orderRes = await this.orderDetail.addOrderDetail(orderDetails);
+        // }
       }
-
-      return post;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;
@@ -94,8 +98,7 @@ export class OrderService {
         },
         data: {
           amount: dto.amount,
-          description: dto.descrption,
-          address: dto.addressId,
+          description: dto.description,
         },
       });
       return result;

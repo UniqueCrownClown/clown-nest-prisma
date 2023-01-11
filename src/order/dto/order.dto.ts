@@ -11,7 +11,7 @@ export class OrderDto {
   @ApiProperty({ description: '订单描述' })
   @IsNumber()
   @IsNotEmpty()
-  descrption?: string;
+  description?: string;
 
   @ApiProperty({ description: '订单地址' })
   @IsNumber()
@@ -21,5 +21,5 @@ export class OrderDto {
   @ApiProperty({ description: '订单详情' })
   @IsArray()
   @IsNotEmpty()
-  orderDetail?: OrderDetailDto[];
+  detail?: Pick<OrderDetailDto, 'productId' | 'count'>[];
 }

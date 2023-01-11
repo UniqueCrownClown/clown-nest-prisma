@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class OrderDetailDto {
   @ApiProperty({ description: '订单id', required: true })
@@ -12,13 +12,8 @@ export class OrderDetailDto {
   @IsNotEmpty()
   productId: number;
 
-  @ApiProperty({ description: '订单总价', required: true })
+  @ApiProperty({ description: '订单数量', required: true })
   @IsNumber()
   @IsNotEmpty()
-  amount: number;
-
-  @ApiProperty({ description: '订单描述' })
-  @IsNumber()
-  @IsNotEmpty()
-  description?: string;
+  count: number;
 }
