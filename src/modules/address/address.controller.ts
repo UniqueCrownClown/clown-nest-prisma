@@ -11,8 +11,8 @@ import {
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddressDto } from './dto/address.dto';
 import { AddressService } from './address.service';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from 'src/modules/auth/decorator';
+import { JwtGuard } from 'src/modules/auth/guard';
 
 @Controller('address')
 @ApiTags('地址管理')

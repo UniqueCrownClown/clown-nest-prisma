@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { OrderDetailService } from 'src/orderDetail/orderDetail.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { OrderDto } from './dto/order.dto';
+import { OrderDetailService } from 'src/modules/orderDetail/orderDetail.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { OrderDto, ORDERSTATUS } from './dto/order.dto';
 
 @Injectable()
 export class OrderService {
@@ -33,6 +33,10 @@ export class OrderService {
           data: {
             amount: dto.amount,
             description: dto.description,
+            status: 'UNPAID',
+            address: {
+              connect: { id: parseInt(dto.addressId) },
+            },
             user: {
               connect: { id: user.id },
             },
@@ -77,8 +81,9 @@ export class OrderService {
               const orderRes = await this.orderDetail.getOrderDetail(
                 item.toString(),
               );
-              const ids = orderRes.map((item) => item.id);
-              const result = await this.orderDetail.delOrderDetail(ids);
+              const result = await this.orderDetail.delOrderDetail(
+                orderRes.join(','),
+              );
               resolve(result);
             }),
         ),
@@ -99,6 +104,10 @@ export class OrderService {
         data: {
           amount: dto.amount,
           description: dto.description,
+          status: dto.status,
+          address: {
+            connect: { id: parseInt(dto.addressId) },
+          },
         },
       });
       return result;

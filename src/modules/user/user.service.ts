@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { AuthDto } from 'src/auth/dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { AuthDto } from 'src/modules/auth/dto';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import * as argon from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -10,6 +11,7 @@ export class UserService {
   async updateUser(id: string, dto: AuthDto, user: ExpressUser) {
     try {
       if (user.isAdmin) {
+        const hash = await argon.hash(dto.password);
         const result = await this.prisma.user.update({
           where: {
             id: parseInt(id),
@@ -17,7 +19,7 @@ export class UserService {
           data: {
             name: dto.name,
             email: dto.email,
-            password: dto.password,
+            hash,
             isAdmin: dto.isAdmin,
           },
         });

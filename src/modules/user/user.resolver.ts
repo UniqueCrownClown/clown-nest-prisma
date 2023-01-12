@@ -11,10 +11,10 @@ import {
   Field,
 } from '@nestjs/graphql';
 import { Inject, Logger } from '@nestjs/common';
-import { PostCreateInput } from 'src/post/post.resolver';
+import { PostCreateInput } from 'src/modules/post/post.resolver';
 import { User } from './dto/user';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Post } from 'src/post/dto/post';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { Post } from 'src/modules/post/dto/post';
 import { hash as argonHash } from 'argon2';
 
 

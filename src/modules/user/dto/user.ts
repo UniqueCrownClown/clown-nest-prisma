@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
-import { Post } from 'src/post/dto/post';
+import { Post } from 'src/modules/post/dto/post';
 
 @ObjectType()
 export class User {

@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from 'src/modules/auth/decorator';
+import { JwtGuard } from 'src/modules/auth/guard';
 import { OrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
 

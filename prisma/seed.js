@@ -68,7 +68,45 @@ async function main() {
     });
     console.log(`Created user with id: ${user.id}`);
   }
+  await addProduct();
   console.log(`Seeding finished.`);
+}
+
+async function addProduct() {
+  try {
+    const post = await prisma.product.createMany({
+      data: [
+        {
+          name: 'lolipop',
+          description: 'lolipop',
+          image:
+            'https://www.xdsucai.cn/wp-content/uploads/2021/01/1610431690-e5a15b51be1b488.png',
+          count: 10,
+          price: 10,
+        },
+        {
+          name: 'cookies',
+          description: 'cookies',
+          image:
+            'https://bkimg.cdn.bcebos.com/pic/1f178a82b9014a908ebaf67cae773912b21bee6f',
+          count: 5,
+          price: 20,
+        },
+        {
+          name: 'donut',
+          description: 'donut',
+          image: 'https://pic.616pic.com/ys_bnew_img/00/08/01/7JjnTzjPsr.jpg',
+          count: 20,
+          price: 30,
+        },
+      ],
+    });
+    return post;
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      throw error;
+    }
+  }
 }
 
 main()

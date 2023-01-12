@@ -14,8 +14,8 @@ import {
 } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { Post } from './dto/post';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/user/dto/user';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { User } from 'src/modules/user/dto/user';
 
 @InputType()
 export class PostCreateInput {

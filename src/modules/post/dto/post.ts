@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql'
-import { User } from 'src/user/dto/user'
+import { User } from 'src/modules/user/dto/user'
 
 @ObjectType()
 export class Post {
