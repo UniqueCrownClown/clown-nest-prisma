@@ -11,6 +11,7 @@ import {
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/modules/auth/decorator';
 import { JwtGuard } from 'src/modules/auth/guard';
+import { Paginate, PaginateParams } from 'src/paginate/paginate';
 import { OrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
 
@@ -25,6 +26,19 @@ export class OrderController {
   @ApiBearerAuth('defaultBearerAuth')
   getOrder(@GetUser() user: ExpressUser) {
     return this.orderService.getOrder(user);
+  }
+
+  @Get('getAll')
+  @ApiOperation({
+    summary: '分页获取order',
+    description: '分页获取获取order',
+    parameters: [
+      { name: 'page', in: 'query' },
+      { name: 'limit', in: 'query' },
+    ],
+  })
+  getAll(@Paginate() pageParams: PaginateParams) {
+    return this.orderService.getAll(pageParams);
   }
 
   @UseGuards(JwtGuard)

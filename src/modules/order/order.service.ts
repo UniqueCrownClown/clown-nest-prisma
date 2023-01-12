@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { OrderDetailService } from 'src/modules/orderDetail/orderDetail.service';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { paginate, PaginateParams } from 'src/paginate/paginate';
 import { OrderDto, ORDERSTATUS } from './dto/order.dto';
 
 @Injectable()
@@ -23,6 +24,19 @@ export class OrderService {
       return result;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async getAll(pageParams: PaginateParams) {
+    const options = {
+      prisma: this.prisma,
+      model: 'order',
+    };
+    try {
+      const result = await paginate(pageParams, options);
+      return result;
+    } catch (e) {
+      throw e;
     }
   }
 
