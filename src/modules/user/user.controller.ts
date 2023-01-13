@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/modules/auth/decorator';
 import { AuthDto } from 'src/modules/auth/dto';
 import { JwtGuard } from 'src/modules/auth/guard';
+import { Paginate, PaginateParams } from 'src/paginate/paginate';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -24,6 +25,14 @@ export class UserController {
   @ApiOperation({ summary: '获取user', description: '获取user' })
   getUser(@GetUser() user: ExpressUser) {
     return this.userService.getUser(user);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('getAll')
+  @ApiBearerAuth('defaultBearerAuth')
+  @ApiOperation({ summary: '获取user', description: '获取user' })
+  getAll(@GetUser() user: ExpressUser,@Paginate() pageParams: PaginateParams) {
+    return this.userService.getUser(user,pageParams);
   }
 
   @Post('addUser')

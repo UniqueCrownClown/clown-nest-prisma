@@ -3,6 +3,7 @@ import { AuthService } from 'src/modules/auth/auth.service';
 import { AuthDto } from 'src/modules/auth/dto';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import * as argon from 'argon2';
+import { paginate, PaginateParams } from 'src/paginate/paginate';
 
 @Injectable()
 export class UserService {
@@ -51,10 +52,18 @@ export class UserService {
   addUser(dto: AuthDto) {
     return this.authService.signUp(dto);
   }
-  async getUser(user: ExpressUser) {
+  async getUser(user: ExpressUser, pageParams?: PaginateParams) {
     try {
       // 过滤密码
       if (user.isAdmin) {
+        if (pageParams) {
+          const result = await paginate<any>(pageParams, {
+            prisma: this.prisma,
+            model: 'user',
+            filterFields: ['name'],
+          });
+          return result;
+        }
         const result = await this.prisma.user.findMany();
         return result;
       }

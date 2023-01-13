@@ -121,7 +121,8 @@ export const paginate = async <M>(
   forEach(params.filter, (field) => {
     map(field, (value, key) => {
       if (isEntityKey(filterFields, key)) {
-        const clause: { [x: string]: { [x: string]: any } } = { AND: [] };
+        // const clause: { [x: string]: { [x: string]: any } } = { AND: [] };
+        const clause: any = {};
         const filteredFieldValue: string[] = [];
         forEach(value, (_value) => {
           const [op, c] = _value.split(':');
@@ -137,7 +138,8 @@ export const paginate = async <M>(
               op.toLowerCase() as FilterOperators,
             )
           ) {
-            clause.AND.push({ [key]: { [op]: condition } });
+            // clause.AND.push({ [key]: { [op]: condition } });
+            clause[key] = { [op]: condition };
             filteredFieldValue.push(_value);
           }
         });

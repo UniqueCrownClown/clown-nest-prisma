@@ -5,7 +5,11 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy';
 
 @Module({
-  imports: [JwtModule.register({})],
+  imports: [
+    JwtModule.register({
+      signOptions: { expiresIn: 3600 * 24 },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
 })
