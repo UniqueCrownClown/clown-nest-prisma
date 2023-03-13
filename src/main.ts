@@ -1,12 +1,23 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { MicroserviceOptions, Transport} from '@nestjs/microservices';
 import { AppModule } from './modules/app.module';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // microservice start
+  const microserviceTcp = app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.TCP,
+    options: {
+      port: 5001,
+    },
+  });
+  await app.startAllMicroservices();
+  // microservice end
   // 开启后post会过滤不需要的参数，对graphql的post参数有影响
   // app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // 全局注册拦截器

@@ -48,3 +48,13 @@ $ npm run test:cov
 ## recorrd
 
 1. use code first
+
+2. swagger APi && graphQl
+
+3. INestApplication && INestMicroService
+
+4. Hybrid application
+
+5. rpc服务提供方和调用方
+- consumer.controller
+- app.controller

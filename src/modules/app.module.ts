@@ -16,6 +16,10 @@ import { join } from 'path';
 import { PrismaService } from './prisma/prisma.service';
 import { UserResolver } from './user/user.resolver';
 import { PostResolver } from './post/post.resolver';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConsumerController } from 'src/microservice/consumer.controller';
+import { AppService } from 'src/microservice/app.service';
+import { AppController } from 'src/microservice/app.controller';
 
 @Module({
   imports: [
@@ -28,6 +32,13 @@ import { PostResolver } from './post/post.resolver';
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       // sortSchema: true,
     }),
+    ClientsModule.register([
+      {
+        name: 'MATH_SERVICE',
+        transport: Transport.TCP,
+        options: { port: 5001 },
+      },
+    ]),
     AuthModule,
     UserModule,
     PostModule,
@@ -37,7 +48,7 @@ import { PostResolver } from './post/post.resolver';
     OrderModule,
     ProductModule,
   ],
-  controllers: [],
-  providers: [PrismaService, UserResolver, PostResolver],
+  controllers: [AppController, ConsumerController],
+  providers: [PrismaService, UserResolver, PostResolver, AppService],
 })
 export class AppModule {}
